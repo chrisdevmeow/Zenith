@@ -8,46 +8,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         submodules: recursive
-
-    - name: Setup Visual Studio
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Setup CMake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.28.x'
-
-    - name: Install JUCE
+    
+    - name: Clone JUCE
+      run: git clone --depth 1 --branch 7.0.5 https://github.com/juce-framework/JUCE.git
+    
+    - name: Build Release
       run: |
-        git clone --depth 1 --branch 7.0.5 https://github.com/juce-framework/JUCE.git JUCE
-
-    - name: Configure CMake
-      run: |
-        mkdir Build
-        cd Build
-        cmake .. -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A x64
-
-    - name: Build
-      run: |
-        cd Build
-        msbuild Zenith.sln /p:Configuration=Release /p:Platform=x64 /m
-
-    - name: Upload VST3
+        cmake -Bbuild-release -DCMAKE_BUILD_TYPE=Release
+        cmake --build build-release --config Release
+    
+    - name: Upload Release VST3
       uses: actions/upload-artifact@v4
       with:
-        name: Zenith-Windows-VST3
-        path: Build/Zenith_artefacts/Release/VST3/Zenith.vst3
-
+        name: Zenith-Release
+        path: build-release/Zenith_artefacts/Release/VST3/Zenith.vst3
+    
     - name: Upload Standalone
       uses: actions/upload-artifact@v4
       with:
-        name: Zenith-Windows-Standalone
-        path: Build/Zenith_artefacts/Release/Standalone/Zenith.exe
+        name: Zenith-Standalone
+        path: build-release/Zenith_artefacts/Release/Standalone/Zenith.exe
