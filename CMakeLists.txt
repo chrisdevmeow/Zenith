@@ -130,10 +130,11 @@ target_sources(Zenith PRIVATE
 )
 
 # ============================================================================
-# Include Directories
+# Include Directories — FIXED (JUCE modules added)
 # ============================================================================
 
 target_include_directories(Zenith PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/JUCE/modules
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Synth
@@ -148,8 +149,12 @@ target_include_directories(Zenith PRIVATE
 # Resources
 # ============================================================================
 
-
-target_sources(Zenith PRIVATE ${Zenith_BinaryData})
+# No binary data yet — skip to avoid errors
+# juce_add_binary_data(Zenith_BinaryData
+#     Resources/Fonts/
+#     Resources/Presets/
+# )
+# target_sources(Zenith PRIVATE ${Zenith_BinaryData})
 
 # ============================================================================
 # Compiler Flags
