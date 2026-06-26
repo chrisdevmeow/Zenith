@@ -130,11 +130,12 @@ target_sources(Zenith PRIVATE
 )
 
 # ============================================================================
-# Include Directories — FIXED (JUCE modules added)
+# Include Directories
 # ============================================================================
 
 target_include_directories(Zenith PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/JUCE/modules
+    ${CMAKE_CURRENT_BINARY_DIR}/JUCE/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Synth
