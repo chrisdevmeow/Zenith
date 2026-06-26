@@ -12,7 +12,7 @@ ZenithAudioProcessor::ZenithAudioProcessor()
 {
     // Synth setup
     synth.clearVoices();
-    for (int i = 0; i < 16; ++i) // 16 voices polyphony
+    for (int i = 0; i < 16; ++i)
         synth.addVoice (new SynthVoice());
 
     synth.clearSounds();
@@ -24,6 +24,9 @@ ZenithAudioProcessor::ZenithAudioProcessor()
 
     // Default parameters
     apvts.state.setProperty ("gain", 0.8f, nullptr);
+
+    // Effect rack starts empty
+    effectRack.clear();
 }
 
 ZenithAudioProcessor::~ZenithAudioProcessor()
@@ -108,6 +111,8 @@ void ZenithAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     for (int i = 0; i < synth.getNumVoices(); ++i)
         if (auto* voice = dynamic_cast<SynthVoice*> (synth.getVoice (i)))
             voice->prepareToPlay (sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+
+    effectRack.prepare (sampleRate, samplesPerBlock);
 }
 
 void ZenithAudioProcessor::releaseResources()
@@ -120,14 +125,16 @@ void ZenithAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // Clear any extra output channels
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // Render synth
+    // 1. Synth renders audio
     synth.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
 
-    // Master gain
+    // 2. Effects process the audio
+    effectRack.process (buffer);
+
+    // 3. Master gain
     float gain = apvts.getRawParameterValue ("masterGain")->load();
     buffer.applyGain (gain);
 }
@@ -205,6 +212,17 @@ void ZenithAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto state = apvts.copyState();
     std::unique_ptr<juce::XmlElement> xml (state.createXml());
+
+    // Save effect rack state
+    auto effectState = effectRack.toVar();
+    juce::DynamicObject::Ptr obj = new juce::DynamicObject();
+    obj->setProperty ("effects", effectState);
+    auto effectXml = juce::var (obj.get()).createXml();
+
+    // Merge into main state
+    if (xml && effectXml)
+        xml->setChildElement (effectXml.release(), -1);
+
     copyXmlToBinary (*xml, destData);
 }
 
@@ -212,8 +230,18 @@ void ZenithAudioProcessor::setStateInformation (const void* data, int sizeInByte
 {
     std::unique_ptr<juce::XmlElement> xml (getXmlFromBinary (data, sizeInBytes));
     if (xml.get() != nullptr)
+    {
         if (xml->hasTagName (apvts.state.getType()))
             apvts.replaceState (juce::ValueTree::fromXml (*xml));
+
+        // Load effect rack state
+        auto effectXml = xml->getChildByName ("effects");
+        if (effectXml)
+        {
+            auto effectVar = juce::var::fromXml (*effectXml);
+            effectRack.fromVar (effectVar);
+        }
+    }
 }
 
 // ============================================================================
