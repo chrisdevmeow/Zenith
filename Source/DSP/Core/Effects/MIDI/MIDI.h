@@ -13,10 +13,14 @@ public:
     float getParameter(int index) const override;
     void setParameter(int index, float value) override;
     int getNumParameters() const override { return 2; }
+    // MIDI processing
+    void processMidi (juce::MidiBuffer& midiMessages, juce::MidiBuffer& outputBuffer);
 private:
-    int root = 0; // 0 = C
-    int chordType = 0; // 0 = major, 1 = minor, 2 = 7th
-    juce::MidiBuffer midiBuffer;
+    int root = 0;
+    int chordType = 0;
+    juce::Array<int> heldNotes;
+    bool chordActive = false;
+    int lastRootNote = 0;
 };
 
 class Arpeggiator : public Effect
@@ -31,9 +35,14 @@ public:
     float getParameter(int index) const override;
     void setParameter(int index, float value) override;
     int getNumParameters() const override { return 2; }
+    // MIDI processing
+    void processMidi (juce::MidiBuffer& midiMessages, juce::MidiBuffer& outputBuffer, double bpm);
 private:
     float rate = 0.5f, gate = 0.5f;
     double sampleRate = 44100.0;
-    int step = 0;
-    juce::MidiBuffer midiBuffer;
+    double stepTime = 0.0;
+    int stepIndex = 0;
+    juce::Array<int> heldNotes;
+    juce::Array<int> arpeggioNotes;
+    bool arpeggioActive = false;
 };
