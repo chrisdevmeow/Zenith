@@ -148,10 +148,6 @@ target_include_directories(Zenith PRIVATE
 # Resources
 # ============================================================================
 
-juce_add_binary_data(Zenith_BinaryData
-    Resources/Fonts/
-    Resources/Presets/
-)
 
 target_sources(Zenith PRIVATE ${Zenith_BinaryData})
 
