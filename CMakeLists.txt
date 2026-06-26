@@ -27,7 +27,7 @@ juce_add_plugin(Zenith
 
     VST3                ON
     Standalone          ON
-    AUv3                OFF  # macOS only — turn on if you're on Mac
+    AUv3                OFF
     AAX                 OFF
 )
 
@@ -36,28 +36,95 @@ juce_add_plugin(Zenith
 # ============================================================================
 
 target_sources(Zenith PRIVATE
+    # Core
     Source/Core/PluginProcessor.cpp
     Source/Core/PluginProcessor.h
     Source/Core/PluginEditor.cpp
     Source/Core/PluginEditor.h
 
+    # Synth
     Source/Synth/SynthVoice.cpp
     Source/Synth/SynthVoice.h
     Source/Synth/SynthSound.cpp
     Source/Synth/SynthSound.h
 
-    Source/DSP/Oscillator.cpp
-    Source/DSP/Oscillator.h
-    Source/DSP/Filter.cpp
-    Source/DSP/Filter.h
-    Source/DSP/Envelope.cpp
-    Source/DSP/Envelope.h
+    # DSP Core
+    Source/DSP/Core/Effect.cpp
+    Source/DSP/Core/Effect.h
+    Source/DSP/Core/EffectRack.cpp
+    Source/DSP/Core/EffectRack.h
+    Source/DSP/Core/EffectFactory.cpp
+    Source/DSP/Core/EffectFactory.h
 
+    # DSP Effects — Dynamics
+    Source/DSP/Core/Effects/Dynamics/Dynamics.cpp
+    Source/DSP/Core/Effects/Dynamics/Dynamics.h
+    Source/DSP/Core/Effects/Dynamics/DynamicsExtra.cpp
+    Source/DSP/Core/Effects/Dynamics/DynamicsExtra.h
+
+    # DSP Effects — EQ
+    Source/DSP/Core/Effects/EQ/EQ.cpp
+    Source/DSP/Core/Effects/EQ/EQ.h
+    Source/DSP/Core/Effects/EQ/EQExtra.cpp
+    Source/DSP/Core/Effects/EQ/EQExtra.h
+
+    # DSP Effects — Delay
+    Source/DSP/Core/Effects/Delay/Delay.cpp
+    Source/DSP/Core/Effects/Delay/Delay.h
+    Source/DSP/Core/Effects/Delay/DelayExtra.cpp
+    Source/DSP/Core/Effects/Delay/DelayExtra.h
+
+    # DSP Effects — Reverb
+    Source/DSP/Core/Effects/Reverb/Reverb.cpp
+    Source/DSP/Core/Effects/Reverb/Reverb.h
+    Source/DSP/Core/Effects/Reverb/ReverbExtra.cpp
+    Source/DSP/Core/Effects/Reverb/ReverbExtra.h
+
+    # DSP Effects — Modulation
+    Source/DSP/Core/Effects/Modulation/Modulation.cpp
+    Source/DSP/Core/Effects/Modulation/Modulation.h
+    Source/DSP/Core/Effects/Modulation/ModulationExtra.cpp
+    Source/DSP/Core/Effects/Modulation/ModulationExtra.h
+
+    # DSP Effects — Distortion
+    Source/DSP/Core/Effects/Distortion/Distortion.cpp
+    Source/DSP/Core/Effects/Distortion/Distortion.h
+    Source/DSP/Core/Effects/Distortion/DistortionExtra.cpp
+    Source/DSP/Core/Effects/Distortion/DistortionExtra.h
+
+    # DSP Effects — Spatial
+    Source/DSP/Core/Effects/Spatial/Spatial.cpp
+    Source/DSP/Core/Effects/Spatial/Spatial.h
+    Source/DSP/Core/Effects/Spatial/SpatialExtra.cpp
+    Source/DSP/Core/Effects/Spatial/SpatialExtra.h
+
+    # DSP Effects — Creative
+    Source/DSP/Core/Effects/Creative/Creative.cpp
+    Source/DSP/Core/Effects/Creative/Creative.h
+    Source/DSP/Core/Effects/Creative/CreativeExtra.cpp
+    Source/DSP/Core/Effects/Creative/CreativeExtra.h
+
+    # DSP Effects — MIDI
+    Source/DSP/Core/Effects/MIDI/MIDI.cpp
+    Source/DSP/Core/Effects/MIDI/MIDI.h
+    Source/DSP/Core/Effects/MIDI/MIDIExtra.cpp
+    Source/DSP/Core/Effects/MIDI/MIDIExtra.h
+
+    # DSP Effects — Utility
+    Source/DSP/Core/Effects/Utility/Utility.cpp
+    Source/DSP/Core/Effects/Utility/Utility.h
+    Source/DSP/Core/Effects/Utility/UtilityExtra.cpp
+    Source/DSP/Core/Effects/Utility/UtilityExtra.h
+
+    # UI
     Source/UI/Knob.cpp
     Source/UI/Knob.h
     Source/UI/LookAndFeel.cpp
     Source/UI/LookAndFeel.h
+    Source/UI/EffectPanel.cpp
+    Source/UI/EffectPanel.h
 
+    # Utils
     Source/Utils/MathHelpers.h
     Source/Utils/ParameterHelpers.h
 )
@@ -71,6 +138,8 @@ target_include_directories(Zenith PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Core
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Synth
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP/Core
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP/Core/Effects
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/UI
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Utils
 )
@@ -102,7 +171,7 @@ else()
 endif()
 
 # ============================================================================
-# Post-build (Windows: copy to your VST3 folder)
+# Post-build (Windows: copy to VST3 folder)
 # ============================================================================
 
 if (WIN32 AND EXISTS "$ENV{USERPROFILE}/Documents/VST3")
