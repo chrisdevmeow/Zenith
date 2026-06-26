@@ -1,28 +1,28 @@
 #include "EffectFactory.h"
-#include "../Effects/Dynamics/Dynamics.h"
-#include "../Effects/Dynamics/DynamicsExtra.h"
-#include "../Effects/EQ/EQ.h"
-#include "../Effects/EQ/EQExtra.h"
-#include "../Effects/Delay/Delay.h"
-#include "../Effects/Delay/DelayExtra.h"
-#include "../Effects/Reverb/Reverb.h"
-#include "../Effects/Reverb/ReverbExtra.h"
-#include "../Effects/Modulation/Modulation.h"
-#include "../Effects/Modulation/ModulationExtra.h"
-#include "../Effects/Distortion/Distortion.h"
-#include "../Effects/Distortion/DistortionExtra.h"
-#include "../Effects/Spatial/Spatial.h"
-#include "../Effects/Spatial/SpatialExtra.h"
-#include "../Effects/Creative/Creative.h"
-#include "../Effects/Creative/CreativeExtra.h"
-#include "../Effects/MIDI/MIDI.h"
-#include "../Effects/MIDI/MIDIExtra.h"
-#include "../Effects/Utility/Utility.h"
-#include "../Effects/Utility/UtilityExtra.h"
+#include "Effects/Dynamics/Dynamics.h"
+#include "Effects/Dynamics/DynamicsExtra.h"
+#include "Effects/EQ/EQ.h"
+#include "Effects/EQ/EQExtra.h"
+#include "Effects/Delay/Delay.h"
+#include "Effects/Delay/DelayExtra.h"
+#include "Effects/Reverb/Reverb.h"
+#include "Effects/Reverb/ReverbExtra.h"
+#include "Effects/Modulation/Modulation.h"
+#include "Effects/Modulation/ModulationExtra.h"
+#include "Effects/Distortion/Distortion.h"
+#include "Effects/Distortion/DistortionExtra.h"
+#include "Effects/Spatial/Spatial.h"
+#include "Effects/Spatial/SpatialExtra.h"
+#include "Effects/Creative/Creative.h"
+#include "Effects/Creative/CreativeExtra.h"
+#include "Effects/MIDI/MIDI.h"
+#include "Effects/MIDI/MIDIExtra.h"
+#include "Effects/Utility/Utility.h"
+#include "Effects/Utility/UtilityExtra.h"
 
 std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
 {
-    // Dynamics
+    // ===== DYNAMICS =====
     if (name == "Compressor") return std::make_unique<Compressor>();
     if (name == "Limiter") return std::make_unique<Limiter>();
     if (name == "Expander") return std::make_unique<Expander>();
@@ -42,7 +42,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "FeedForwardCompressor") return std::make_unique<FeedForwardCompressor>();
     if (name == "EnvelopeFollower") return std::make_unique<EnvelopeFollower>();
 
-    // EQ
+    // ===== EQ =====
     if (name == "ParametricEQ") return std::make_unique<ParametricEQ>();
     if (name == "GraphicEQ") return std::make_unique<GraphicEQ>();
     if (name == "DynamicEQ") return std::make_unique<DynamicEQ>();
@@ -55,7 +55,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "NotchFilter") return std::make_unique<NotchFilter>();
     if (name == "AllpassFilter") return std::make_unique<AllpassFilter>();
 
-    // Delay
+    // ===== DELAY =====
     if (name == "DigitalDelay") return std::make_unique<DigitalDelay>();
     if (name == "AnalogDelay") return std::make_unique<AnalogDelay>();
     if (name == "TapeDelay") return std::make_unique<TapeDelay>();
@@ -77,7 +77,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "ShimmerDelay") return std::make_unique<ShimmerDelay>();
     if (name == "GrainDelay") return std::make_unique<GrainDelay>();
 
-    // Reverb
+    // ===== REVERB =====
     if (name == "HallReverb") return std::make_unique<HallReverb>();
     if (name == "RoomReverb") return std::make_unique<RoomReverb>();
     if (name == "ChamberReverb") return std::make_unique<ChamberReverb>();
@@ -104,12 +104,10 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "EchoChamber") return std::make_unique<EchoChamber>();
     if (name == "StudioReverb") return std::make_unique<StudioReverb>();
 
-    // Modulation
+    // ===== MODULATION =====
     if (name == "Chorus") return std::make_unique<Chorus>();
     if (name == "Flanger") return std::make_unique<Flanger>();
-    if (name == "Phaser_4Stage") return std::make_unique<Phaser_4Stage>();
-    if (name == "Phaser_8Stage") return std::make_unique<Phaser_8Stage>();
-    if (name == "Phaser_12Stage") return std::make_unique<Phaser_12Stage>();
+    if (name == "Phaser") return std::make_unique<Phaser>();
     if (name == "Tremolo") return std::make_unique<Tremolo>();
     if (name == "Vibrato") return std::make_unique<Vibrato>();
     if (name == "AutoPan") return std::make_unique<AutoPan>();
@@ -130,7 +128,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "TouchWah") return std::make_unique<TouchWah>();
     if (name == "Spatializer") return std::make_unique<Spatializer>();
 
-    // Distortion
+    // ===== DISTORTION =====
     if (name == "Overdrive") return std::make_unique<Overdrive>();
     if (name == "Distortion") return std::make_unique<Distortion>();
     if (name == "Fuzz") return std::make_unique<Fuzz>();
@@ -138,8 +136,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "SampleRateReducer") return std::make_unique<SampleRateReducer>();
     if (name == "Waveshaper") return std::make_unique<Waveshaper>();
     if (name == "Foldback") return std::make_unique<Foldback>();
-    if (name == "Rectifier_Half") return std::make_unique<Rectifier_Half>();
-    if (name == "Rectifier_Full") return std::make_unique<Rectifier_Full>();
+    if (name == "Rectifier") return std::make_unique<Rectifier>();
     if (name == "Clipper") return std::make_unique<Clipper>();
     if (name == "SoftClipper") return std::make_unique<SoftClipper>();
     if (name == "HardClipper") return std::make_unique<HardClipper>();
@@ -152,7 +149,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "AsymmetricClipper") return std::make_unique<AsymmetricClipper>();
     if (name == "MultibandDistortion") return std::make_unique<MultibandDistortion>();
 
-    // Spatial
+    // ===== SPATIAL =====
     if (name == "StereoWidener") return std::make_unique<StereoWidener>();
     if (name == "StereoImager") return std::make_unique<StereoImager>();
     if (name == "MSDecoder") return std::make_unique<MSDecoder>();
@@ -167,7 +164,7 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "BalanceControl") return std::make_unique<BalanceControl>();
     if (name == "WidthControl") return std::make_unique<WidthControl>();
 
-    // Creative
+    // ===== CREATIVE =====
     if (name == "GranularProcessor") return std::make_unique<GranularProcessor>();
     if (name == "GlitchMachine") return std::make_unique<GlitchMachine>();
     if (name == "Stutter") return std::make_unique<Stutter>();
@@ -178,28 +175,22 @@ std::unique_ptr<Effect> EffectFactory::create (const juce::String& name)
     if (name == "SpectralFreeze") return std::make_unique<SpectralFreeze>();
     if (name == "HarmonicGenerator") return std::make_unique<HarmonicGenerator>();
     if (name == "SubharmonicGenerator") return std::make_unique<SubharmonicGenerator>();
-    if (name == "Octaver_2Octave") return std::make_unique<Octaver_2Octave>();
-    if (name == "Octaver_3Octave") return std::make_unique<Octaver_3Octave>();
-    if (name == "Resonator_String") return std::make_unique<Resonator_String>();
-    if (name == "Resonator_Plate") return std::make_unique<Resonator_Plate>();
-    if (name == "Resonator_Tube") return std::make_unique<Resonator_Tube>();
-    if (name == "NoiseGenerator_White") return std::make_unique<NoiseGenerator_White>();
-    if (name == "NoiseGenerator_Pink") return std::make_unique<NoiseGenerator_Pink>();
-    if (name == "NoiseGenerator_Brown") return std::make_unique<NoiseGenerator_Brown>();
+    if (name == "Octaver") return std::make_unique<Octaver>();
+    if (name == "Resonator") return std::make_unique<Resonator>();
     if (name == "FMProcessor") return std::make_unique<FMProcessor>();
     if (name == "AMProcessor") return std::make_unique<AMProcessor>();
     if (name == "CrossSynthesis") return std::make_unique<CrossSynthesis>();
     if (name == "FFTConvolution") return std::make_unique<FFTConvolution>();
     if (name == "PhaseScrambler") return std::make_unique<PhaseScrambler>();
 
-    // MIDI
+    // ===== MIDI =====
     if (name == "ChordGenerator") return std::make_unique<ChordGenerator>();
     if (name == "Arpeggiator") return std::make_unique<Arpeggiator>();
     if (name == "StepSequencer") return std::make_unique<StepSequencer>();
     if (name == "ScaleFilter") return std::make_unique<ScaleFilter>();
     if (name == "NoteMangler") return std::make_unique<NoteMangler>();
 
-    // Utility
+    // ===== UTILITY =====
     if (name == "Gain") return std::make_unique<Gain>();
     if (name == "Trim") return std::make_unique<Trim>();
     if (name == "Pan") return std::make_unique<Pan>();
@@ -245,17 +236,17 @@ juce::StringArray EffectFactory::getAvailableEffects()
         "LexiconPlate", "LargeHall", "SmallRoom", "MediumRoom", "DeepSpace",
         "GlimmerReverb", "EchoChamber", "StudioReverb",
         // Modulation
-        "Chorus", "Flanger", "Phaser_4Stage", "Phaser_8Stage", "Phaser_12Stage",
-        "Tremolo", "Vibrato", "AutoPan", "RotarySpeaker", "LeslieSimulator",
-        "UniVibe", "RingModulator", "FrequencyShifter", "PitchShifter",
-        "Harmonizer", "Choir_4Voice", "Choir_8Voice", "FormantFilter",
-        "Vocoder", "EnvelopeFilter", "WahWah", "AutoWah", "TouchWah", "Spatializer",
+        "Chorus", "Flanger", "Phaser", "Tremolo", "Vibrato",
+        "AutoPan", "RotarySpeaker", "LeslieSimulator", "UniVibe",
+        "RingModulator", "FrequencyShifter", "PitchShifter", "Harmonizer",
+        "Choir_4Voice", "Choir_8Voice", "FormantFilter", "Vocoder",
+        "EnvelopeFilter", "WahWah", "AutoWah", "TouchWah", "Spatializer",
         // Distortion
         "Overdrive", "Distortion", "Fuzz", "Bitcrusher", "SampleRateReducer",
-        "Waveshaper", "Foldback", "Rectifier_Half", "Rectifier_Full",
-        "Clipper", "SoftClipper", "HardClipper", "TubeSaturation",
-        "TapeSaturation", "TransformerSaturation", "ConsoleSaturation",
-        "PreampSaturation", "DiodeClipper", "AsymmetricClipper", "MultibandDistortion",
+        "Waveshaper", "Foldback", "Rectifier", "Clipper", "SoftClipper",
+        "HardClipper", "TubeSaturation", "TapeSaturation", "TransformerSaturation",
+        "ConsoleSaturation", "PreampSaturation", "DiodeClipper", "AsymmetricClipper",
+        "MultibandDistortion",
         // Spatial
         "StereoWidener", "StereoImager", "MSDecoder", "MSEncoder",
         "HaasEffect", "StereoDelay", "StereoChorus", "StereoFlanger",
@@ -263,11 +254,9 @@ juce::StringArray EffectFactory::getAvailableEffects()
         // Creative
         "GranularProcessor", "GlitchMachine", "Stutter", "Looper",
         "ReverseLooper", "BitMangler", "SpectralBlur", "SpectralFreeze",
-        "HarmonicGenerator", "SubharmonicGenerator", "Octaver_2Octave",
-        "Octaver_3Octave", "Resonator_String", "Resonator_Plate",
-        "Resonator_Tube", "NoiseGenerator_White", "NoiseGenerator_Pink",
-        "NoiseGenerator_Brown", "FMProcessor", "AMProcessor",
-        "CrossSynthesis", "FFTConvolution", "PhaseScrambler",
+        "HarmonicGenerator", "SubharmonicGenerator", "Octaver",
+        "Resonator", "FMProcessor", "AMProcessor", "CrossSynthesis",
+        "FFTConvolution", "PhaseScrambler",
         // MIDI
         "ChordGenerator", "Arpeggiator", "StepSequencer", "ScaleFilter", "NoteMangler",
         // Utility
