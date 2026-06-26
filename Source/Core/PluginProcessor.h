@@ -36,6 +36,8 @@ public:
 
     juce::AudioProcessorValueTreeState apvts;
     EffectRack& getEffectRack() { return effectRack; }
+    double getBpm() const;
+    void playChord (int root, int type);
 
 private:
     juce::Synthesiser synth;
