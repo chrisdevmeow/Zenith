@@ -4,6 +4,7 @@
 #include "Synth/SynthVoice.h"
 #include "Synth/SynthSound.h"
 #include "UI/LookAndFeel.h"
+#include "../DSP/Core/EffectRack.h"
 
 class ZenithAudioProcessor : public juce::AudioProcessor
 {
@@ -33,9 +34,15 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState apvts;
+    EffectRack& getEffectRack() { return effectRack; }
+
 private:
     juce::Synthesiser synth;
     ZenithLookAndFeel lookAndFeel;
+    EffectRack effectRack;
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ZenithAudioProcessor)
 };
