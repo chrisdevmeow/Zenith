@@ -17,8 +17,8 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Add MSVC to PATH
-      uses: ilammy/msvc-dev-cmd@v1
+    - name: Setup Visual Studio
+      uses: microsoft/setup-msbuild@v2
 
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v2
@@ -38,7 +38,7 @@ jobs:
     - name: Build
       run: |
         cd Build
-        cmake --build . --config Release --parallel
+        msbuild Zenith.sln /p:Configuration=Release /p:Platform=x64 /m
 
     - name: Upload VST3
       uses: actions/upload-artifact@v4
